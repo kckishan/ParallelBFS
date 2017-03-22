@@ -15,9 +15,10 @@ public class waterJugPuzzle {
     private final int N, target_amount;
     private final int size[];
     //Define List of list to store nodes
-    private final List<List<Integer>> adj = new ArrayList<>();
     //Define List of list to store visited nodes
     private final List<List<Integer>> visited = new ArrayList<>();
+    private final List<List<Integer>> parent = new ArrayList<>();
+    private final List<List<Integer>> nodes_list = new ArrayList<>();
     
     //Define constructor to define number of bottles, target amount and size of each bottles
     waterJugPuzzle(int n, int t, int[] s){
@@ -37,43 +38,52 @@ public class waterJugPuzzle {
     }
     
     //Fill the first bottle
-    List<Integer> fill(List<Integer> node){
+    List<Integer> fill(List<Integer> node, int jug){
         List<Integer> step = new ArrayList(node);
-        step.set(0, size[0]);
+        step.set(jug, size[jug]);
         return step;
     }
     
     //Empty the last bottle
-    List<Integer> empty(List<Integer> node){
+    List<Integer> empty(List<Integer> node, int jug){
         List<Integer> step = new ArrayList(node);
-        step.set(size.length - 1, 0);
+        step.set(jug, 0);
         return step;
     }
     
-    void possible_steps(List<Integer> node){
-        visited.add(node);
+    List<List<Integer>> possible_steps(List<Integer> node){
+        List<List<Integer>> next_nodes = new ArrayList<>();
         List<Integer> step;
+        List<Integer> temp = new ArrayList<>(node);
         //If first bottle is empty, fill it
-        if (node.get(0)==0){
-            step = fill(node);
-            if(!visited.contains(step))
-                adj.add(step);
-        }
-        //if first bottle is not empty and last bottle is not full, transfer water
-        else if (node.get(0)>0 & node.get(N-1)!= size[size.length-1]){
-            for(int i = 0; i < N-1;i++){
-                step = transfer(node,i,i+1);
-                if(!visited.contains(step))
-                    adj.add(step);
+        for(int i=0; i< N;i++){
+            step = fill(temp, i);
+            if(!visited.contains(step) & !next_nodes.contains(step) & !step.isEmpty()){
+                parent.add(node);
+                next_nodes.add(step);
             }
         }
+        //if first bottle is not empty and last bottle is not full, transfer water
+            for(int i = 0; i < N;i++){
+                for(int j = 0;  j < N ; j++){
+                    if(i != j){
+                    step = transfer(temp,i,j);
+                    if(!visited.contains(step) & !next_nodes.contains(step)  & !step.isEmpty()){
+                        parent.add(node);
+                        next_nodes.add(step);   
+                    }
+                    }
+                }
+            }
         //if first bottle is not empty but last bottle is full, empty last bottle
-        else if(((node.get(0)>0) && (node.get(N-1) == size[size.length-1]))) {
-            step = empty(node);
-            if(!visited.contains(step))
-                adj.add(step);
+        for(int i=0;i<N;i++){
+            step = empty(temp, i);
+            if(!visited.contains(step) & !next_nodes.contains(step)  & !step.isEmpty()){
+                parent.add(node);
+                next_nodes.add(step);
+            }
         }
-        
+        return next_nodes;
     }
     
     //Check if target amount is collected
@@ -83,6 +93,7 @@ public class waterJugPuzzle {
             list = graph.get(i);
         return list.contains(target_amount);
     }
+    
     
     public static void main(String[] args){
         // Define number of bottles
@@ -94,28 +105,51 @@ public class waterJugPuzzle {
         //Define target amount to be collected in tank
         int target = 4;
         
+        List<List<Integer>> adj = new ArrayList<>();
+        List<List<Integer>> path = new ArrayList<>();
+        List<Integer> child_node = new ArrayList<>();
+        int child_index;
+        
         //Create an object for class Graph
         waterJugPuzzle states = new waterJugPuzzle(num_of_bottles, target, s); 
         List<Integer> start = new ArrayList<Integer>(num_of_bottles);
         for (int i=0;i<num_of_bottles;i++)
             start.add(0);
-        states.adj.add(start);
         
+        states.nodes_list.add(start);
+        states.parent.add(start);
+        states.visited.add(start);
         //Define Counter to iterate on list
         int counter = 0;
         //Check if target quantity is collected
-        while(states.targetfound(states.adj) == false){
-            //Get all possible steps for given node
-            states.possible_steps(states.adj.get(counter));
+        while (states.targetfound(adj) == false){
+            adj = states.possible_steps(states.nodes_list.get(counter));
+            
+            for(int i =0; i< adj.size();i++){
+                states.nodes_list.add(adj.get(i));
+                states.visited.add(adj.get(i));
+            }
             counter +=1;
         }
+          
+        // Find the path from start to target point
+        int  solution = states.nodes_list.size()-1;
+        child_node = states.nodes_list.get(solution);
+        path.add(child_node);
+        while(child_node != start){
+            child_index = states.nodes_list.indexOf(child_node);
+            child_node = states.parent.get(child_index);
+            path.add(child_node);
+//            parent_index = ;
+        }            
         System.out.println("The solution to water jug puzzle with "+ num_of_bottles +" bottles of size " + Arrays.toString(s) + " is:");
-        for(int i = 0; i < states.adj.size();i++){
-            System.out.print(states.adj.get(i));  
-            if(i!=states.adj.size()-1)
+          
+        for(int i = path.size()-1; i >= 0 ;i--){
+            System.out.print(path.get(i));  
+            if(i!=0)
                 System.out.print("->");
         }
         System.out.print(".");
-        System.out.println();
+        System.out.println("");
     }
 }
