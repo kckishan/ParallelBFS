@@ -9,7 +9,7 @@ We would like to collect a specific amount of water in a bottle when we have k w
 Water Jug Puzzle was solved using Breadth-First Search in 
 
 * Sequential and 
-* Master-worker parallel flow. 
+* Master-worker cluster pattern
 
 Test case: two bottles of size 5, 3 and target amount of 4. 
 
