@@ -1,37 +1,51 @@
-## Welcome to GitHub Pages
+We would like to collect a specific amount of water in a bottle when we have k water bottles with prespecified capacity and only the following operations are allowed:
+* Fill up either bottle completely.
+* Empty either bottle completely.
+* Pour water from one bottle to the other until the poured bottle becomes empty or the other bottle becomes full.
 
-You can use the [editor on GitHub](https://github.com/kckishan/WaterJugPuzzle/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Water Jug Puzzle was solved using Breadth-First Search in 
 
-### Markdown
+* Sequential and 
+* Master-worker parallel flow. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Test case: two bottles of size 5, 3 and target amount of 4. 
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+Solution given by Sequential and cluster implementation:
+```
+The solution to water jug puzzle with 2 bottles of size [5, 3] is: [0, 0]->[5, 0]->[2, 3]->[2, 0]->[0, 2]->[5, 2]->[4, 3].
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+To compare sequential and cluster implementation, 10 bottles of size 3,5,7,13,19,29,31,37,39,41 with target amount 21 was considered.
 
-### Jekyll Themes
+Solution: 
+```
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]-> [0, 0, 0, 0, 19, 0, 0, 0, 0, 0]-> [0, 0, 0, 0, 19, 0, 0, 0, 0, 41]-> [0, 0, 0, 0, 0, 0, 0, 0, 19, 41]-> [0, 0, 0, 0, 0, 0, 0, 0, 39, 21].
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kckishan/WaterJugPuzzle/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
+| Sequential time | Parallel time| Speedup|
+-------------------------------------------
+|7019|4340|7019/4340 = 1.6|
+ 
+ 
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+To run Sequential program,
+
+* Compile the java file
+javac waterJugPuzzle.java
+
+* Execute compiled java class file
+java waterJugPuzzle
+
+
+To run parallel program
+* Compile the parallel program
+javac WaterJugClu.java
+
+* Make jar file from compiled class file
+jar cf WaterJugClu.jar *.class
+
+* Execute the jar created
+java pj2 jar-WaterJugClu.jar WaterJugClu 
