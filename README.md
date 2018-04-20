@@ -34,18 +34,26 @@ Solution:
 To run Sequential program,
 
 * Compile the java file
+```
 javac waterJugPuzzle.java
-
+```
 * Execute compiled java class file
+```
 java waterJugPuzzle
-
+```
 
 To run parallel program
 * Compile the parallel program
+```
 javac WaterJugClu.java
+```
 
 * Make jar file from compiled class file
+```
 jar cf WaterJugClu.jar *.class
+```
 
 * Execute the jar created
+```
 java pj2 jar-WaterJugClu.jar WaterJugClu 
+```
