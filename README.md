@@ -1,3 +1,5 @@
+# Water Jug Puzzle (The Die Hard Riddle)
+
 We would like to collect a specific amount of water in a bottle when we have k water bottles with prespecified capacity and only the following operations are allowed:
 * Fill up either bottle completely.
 * Empty either bottle completely.
@@ -31,29 +33,24 @@ Solution:
  
 
 
-To run Sequential program,
+### To run Sequential program,
 
-* Compile the java file
 ```
+# Compile the java file
 javac waterJugPuzzle.java
-```
-* Execute compiled java class file
-```
+
+# Execute compiled java class file
 java waterJugPuzzle
 ```
 
-To run parallel program
-* Compile the parallel program
+### To run parallel program
 ```
+# Compile the parallel program
 javac WaterJugClu.java
-```
 
-* Make jar file from compiled class file
-```
+# Make jar file from compiled class file
 jar cf WaterJugClu.jar *.class
-```
 
-* Execute the jar created
-```
+# Execute the jar created
 java pj2 jar-WaterJugClu.jar WaterJugClu 
 ```
