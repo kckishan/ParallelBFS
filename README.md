@@ -24,9 +24,9 @@ Solution:
 ```
 
 
-| Sequential time | Parallel time| Speedup|
--------------------------------------------
-|7019|4340|7019/4340 = 1.6|
+ Sequential time | Parallel time| Speedup
+---|---|---
+7019|4340|7019/4340 = 1.6
  
  
 
